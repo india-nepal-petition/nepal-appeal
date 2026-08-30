@@ -1,0 +1,230 @@
+<!--
+============================================================
+  NEPAL FLOOD - GOVERNMENT APPEAL EMAILER (email-only)
+  ------------------------------------------------------------
+  WHAT YOU EDIT (in the CONFIG block below):
+   - formEndpoint  -> paste your Google Apps Script web-app URL
+  Recipient emails and the appeal letter are already in.
+  Emails are sent from each person's own inbox (not by any script).
+============================================================
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Send the Government Appeal - Nepal Flood Families</title>
+
+<style>
+  :root{--primary:#12695a;--primary-dark:#0d5346;--navy:#1f3a5f;
+    --ink:#1c1c1e;--muted:#6b6b70;--line:#e6e6ea;--bg:#f7f6f3;--card:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 60px}
+  header{background:linear-gradient(160deg,var(--primary),var(--primary-dark));color:#fff;padding:34px 18px 30px;text-align:center}
+  header .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin-bottom:10px}
+  header h1{font-size:25px;line-height:1.25;margin:0 auto;max-width:560px}
+  header .sub{margin-top:12px;font-size:14px;opacity:.92}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  h2{font-size:19px;margin:0 0 12px}
+  p{margin:0 0 12px;color:#333}
+  .ask{background:#e7f2ee;border-left:4px solid var(--primary);padding:14px 16px;border-radius:8px;font-size:15px}
+  label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:14px 0 6px}
+  input[type=text],input[type=email]{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  input:focus{outline:none;border-color:var(--primary)}
+  .two{display:flex;gap:10px}.two>div{flex:1}
+  button{cursor:pointer;font-family:inherit;font-weight:600;border:none;border-radius:10px}
+  .btn-primary{width:100%;background:var(--primary);color:#fff;font-size:17px;padding:15px;margin-top:18px}
+  .btn-primary:active{background:var(--primary-dark)}.btn-primary:disabled{opacity:.5}
+  .btn-ghost{width:100%;background:#fff;color:var(--navy);border:1.5px solid var(--navy);font-size:15px;padding:12px;margin-top:10px}
+  .btn-mini-row{display:flex;gap:10px;margin-top:10px}
+  .btn-mini{flex:1;background:#fff;color:var(--navy);border:1.5px solid var(--navy);font-size:14px;padding:11px}
+  .hidden{display:none}
+  .thanks{background:#e9f5ec;border:1px solid #bfe3c8;color:#1c5c33;padding:14px 16px;border-radius:10px;font-size:15px;margin-top:6px}
+  .err{color:#c0392b;font-size:13px;margin-top:6px;min-height:1px}
+  .recips{font-size:12px;color:var(--muted);background:#f3f3f5;border-radius:8px;padding:10px 12px;margin-top:10px;word-break:break-all}
+  .letterbox{width:100%;height:200px;font-size:12px;line-height:1.5;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fafafa;color:#333;margin-top:8px;resize:vertical}
+  .copied{color:#1c5c33;font-size:13px;margin-top:6px;min-height:1px}
+  .hint{font-size:13px;color:var(--muted)}
+  .foot{text-align:center;font-size:12px;color:var(--muted);margin-top:26px;line-height:1.6}
+</style>
+
+<script>
+/* ======================= EDIT BELOW ======================= */
+const CONFIG = {
+  title: "Send the Government an Appeal for Nepal's Flood Families",
+  cause: "A glacial-collapse flash flood struck the Bhote Koshi and Trishuli valleys on the Nepal-China border on 26 August 2026. Hundreds are confirmed dead and roughly 2,500 people remain missing, including hundreds of Indian nationals. Families need rescue, identification and repatriation of the deceased, clear information, and documentation support.",
+  ask: "In two minutes you can add your name and send a ready-written appeal to the Government of India and the Embassy of India, asking them to act.",
+
+  emailTo: ["amb.kathmandu@mea.gov.in","hoc.kathmandu@mea.gov.in","usnepal1@mea.gov.in","situationroom@mea.gov.in"],
+  emailCc: ["dcm.kathmandu@mea.gov.in","eam@mea.gov.in","dirchina@mea.gov.in","usnorth@mea.gov.in","connect@mygov.nic.in","emergency@mofa.gov.np","gunaso@moha.gov.np","info@bipad.gov.np","control@moha.gov.np"],
+  emailSubject: "URGENT - Assistance for families of Indian citizens affected by the Nepal floods",
+  bccCopy: "india.petition.nepal@gmail.com",   // blind copy = your private record of emails actually sent
+
+  // Paste your Google Apps Script web-app URL here after you deploy it (records who added their name).
+  formEndpoint: ""
+};
+/* ======================= EDIT ABOVE ======================= */
+
+const EMAIL_BODY =
+`Dear Sir / Madam,
+
+We, the relatives and family members of Indian citizens affected by the recent floods/disaster in Nepal, respectfully seek the urgent intervention of the Government of India. We sincerely appreciate the efforts already being made by the Government of India, the Embassy of India and the Nepalese authorities.
+
+However, several families remain in extreme distress and uncertainty regarding their loved ones. We respectfully request the Government to urgently assist with the following:
+
+1. Rescue: Coordinate with the Government of Nepal and the Nepal Army and, with necessary authorization, deploy Indian expert teams, manpower, specialised equipment and technology to assist in rescuing people who may still be stranded.
+
+2. Mortal remains, recovery, identification and repatriation: Take up with the Nepalese Government the urgent recovery, identification, release and repatriation of mortal remains of Indian citizens. We request deployment of Indian forensic experts and assistance with facial matching, DNA identification and DNA sample collection from relatives in India. A clear, time-bound India-Nepal SOP may kindly be established. Recovering mortal remains is deeply important to families for performing final rites with dignity and obtaining closure.
+
+3. Nepal Police database: We understand that Nepal Police have created a database containing photographs/details of recovered deceased persons. We request appropriate filters such as nationality, age, sex and other identifying parameters, so families do not have to view large numbers of distressing images unnecessarily.
+
+4. Common database of rescued and deceased persons: MEA stated on 28 August 2026 on X.com that approximately 400 persons had been rescued from China. We request the MEA to establish and maintain a common, consolidated database covering Indian citizens rescued, hospitalised, missing or deceased in both Nepal and China, and release a cumulative, regularly updated list wherever permissible. This would enable families to verify the status of their relatives through a single official source and avoid uncertainty and conflicting information.
+
+5. Death certificates and legal documentation: Establish a single-window, expedited process for death certificates and all necessary legal documentation in every case, whether mortal remains are recovered and identified or cannot be recovered, identified or brought to India. Appropriate alternative documentation may kindly be prescribed where necessary, so grieving families do not have to navigate multiple departments and procedures.
+
+We earnestly request the Government of India to take all possible measures in coordination with the Governments of Nepal and China to provide timely assistance and closure to the affected families.
+
+We would be grateful for an urgent response and details of a designated nodal officer/contact point for coordination with the families.
+
+Yours faithfully,
+Relatives and Family Members of Indian Citizens Affected by the Nepal Floods
+{SIGBLOCK}`;
+
+const HAS_STORAGE = (typeof window!=="undefined") && window.storage && typeof window.storage.set==="function";
+const MODE = CONFIG.formEndpoint ? "endpoint" : (HAS_STORAGE ? "preview" : "none");
+let cName="", cEmail="", cPhone="", cMissing="", cRel="";
+
+function $(id){return document.getElementById(id)}
+function todayStr(){var m=['January','February','March','April','May','June','July','August','September','October','November','December'];var d=new Date();return d.getDate()+' '+m[d.getMonth()]+' '+d.getFullYear();}
+
+window.addEventListener("DOMContentLoaded", ()=>{
+  $("pTitle").textContent=CONFIG.title;
+  $("pCause").textContent=CONFIG.cause;
+  $("pAsk").textContent=CONFIG.ask;
+  $("recipList").textContent="To: "+CONFIG.emailTo.join(", ")+"  |  Cc: "+CONFIG.emailCc.join(", ");
+});
+
+function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+function validPhone(v){return /^[+0-9][0-9 \-]{6,}$/.test(v);}
+
+function postEndpoint(payload){
+  if(MODE!=="endpoint") return;
+  try{ fetch(CONFIG.formEndpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }catch(e){}
+}
+
+function buildBody(){
+  var sig="Name: "+(cName||"[Your name]");
+  if(cMissing) sig+="\nName of deceased/missing person: "+cMissing;
+  if(cRel) sig+="\nRelationship: "+cRel;
+  if(cPhone) sig+="\nContact No.: "+cPhone;
+  if(cEmail) sig+="\nEmail: "+cEmail;
+  return EMAIL_BODY.replace("{SIGBLOCK}",sig);
+}
+
+async function addName(){
+  const name=$("name").value.trim();
+  const email=$("email").value.trim();
+  const phone=$("phone").value.trim();
+  const missing=$("missing").value.trim();
+  const rel=$("rel").value.trim();
+  const err=$("err");err.textContent="";
+  if(name.length<2){err.textContent="Please enter your name.";return}
+  if(!email && !phone){err.textContent="Please enter an email or a phone number.";return}
+  if(email && !validEmail(email)){err.textContent="Please enter a valid email.";return}
+  if(phone && !validPhone(phone)){err.textContent="Please enter a valid phone number.";return}
+
+  const btn=$("addBtn");btn.disabled=true;btn.textContent="Saving...";
+  cName=name;cEmail=email;cPhone=phone;cMissing=missing;cRel=rel;
+  const record={action:"signup",name,email,phone,missing_person:missing,relationship:rel,date:todayStr()};
+  try{
+    postEndpoint(record);
+    $("signForm").classList.add("hidden");
+    $("postSign").classList.remove("hidden");
+    $("letterText").value=buildBody();
+  }catch(e){ err.textContent="Could not save right now - please try again.";btn.disabled=false;btn.textContent="Add my name"; }
+}
+
+function openMail(provider){
+  const to=CONFIG.emailTo.join(","),cc=CONFIG.emailCc.join(","),bcc=CONFIG.bccCopy||"";
+  const su=CONFIG.emailSubject,body=buildBody();
+  try{ navigator.clipboard.writeText(body); }catch(e){}
+  if(provider==="gmail"){
+    window.open("https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(to)+"&cc="+encodeURIComponent(cc)+"&bcc="+encodeURIComponent(bcc)+"&su="+encodeURIComponent(su)+"&body="+encodeURIComponent(body),"_blank","noopener");
+  } else if(provider==="outlook"){
+    window.open("https://outlook.office.com/mail/deeplink/compose?to="+encodeURIComponent(to)+"&cc="+encodeURIComponent(cc)+"&bcc="+encodeURIComponent(bcc)+"&subject="+encodeURIComponent(su)+"&body="+encodeURIComponent(body),"_blank","noopener");
+  } else {
+    window.location.href="mailto:"+encodeURIComponent(to)+"?cc="+encodeURIComponent(cc)+"&bcc="+encodeURIComponent(bcc)+"&subject="+encodeURIComponent(su)+"&body="+encodeURIComponent(body);
+  }
+  $("emailedNote").textContent="The letter has been copied. If the email that opens looks shortened, just paste it in. Keep the blind-copy, then press send.";
+}
+
+async function copyLetter(){
+  const note=$("copyNote"),text=$("letterText").value;
+  try{await navigator.clipboard.writeText(text);note.textContent="Letter copied.";}
+  catch(e){const ta=$("letterText");ta.focus();ta.select();try{document.execCommand("copy");note.textContent="Letter copied.";}catch(_){note.textContent="Select the text above and copy it manually.";}}
+}
+</script>
+
+<header>
+  <div class="kicker">Emergency Humanitarian Appeal</div>
+  <h1 id="pTitle">Send the Government an Appeal</h1>
+  <div class="sub">For the families of Indian citizens affected by the Nepal floods</div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>Why this matters</h2>
+    <p id="pCause"></p>
+    <div class="ask" id="pAsk"></div>
+  </div>
+
+  <div class="card">
+    <h2>Add your name</h2>
+
+    <div id="signForm">
+      <label for="name">Full name</label>
+      <input type="text" id="name" placeholder="Your name" autocomplete="name">
+
+      <div class="two">
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div>
+          <label for="phone">Contact number</label>
+          <input type="text" id="phone" placeholder="98XXXXXXXX">
+        </div>
+      </div>
+      <div class="hint">Enter at least one, email or phone.</div>
+
+      <label for="missing">Name of missing / affected person (if any)</label>
+      <input type="text" id="missing" placeholder="Leave blank if not applicable">
+
+      <label for="rel">Your relationship to them (if any)</label>
+      <input type="text" id="rel" placeholder="e.g. brother, daughter">
+
+      <div class="hint" style="margin-top:12px">Today's date is added to your letter automatically.</div>
+      <div class="err" id="err"></div>
+      <button class="btn-primary" id="addBtn" onclick="addName()">Add my name</button>
+    </div>
+
+    <div id="postSign" class="hidden">
+      <div class="thanks">Thank you, your name is recorded. Now send the appeal below, it takes one tap.</div>
+
+      <h2 style="margin-top:22px">Send the appeal to the Government</h2>
+      <p class="hint">Opens your own email with the letter, recipients and your details filled in (including the missing person's name if you entered one). It sends from your inbox, which is what makes it count. On Gmail or Outlook it is fully automatic; on other apps, paste if it looks short (it is copied for you). Then press send.</p>
+      <div class="recips" id="recipList"></div>
+      <button class="btn-primary" onclick="openMail('default')">Open in my email app &amp; send</button>
+      <div class="btn-mini-row">
+        <button class="btn-mini" onclick="openMail('gmail')">Use Gmail</button>
+        <button class="btn-mini" onclick="openMail('outlook')">Use Outlook</button>
+      </div>
+      <div class="copied" id="emailedNote"></div>
+      <button class="btn-ghost" onclick="copyLetter()">Copy the letter</button>
+      <textarea class="letterbox" id="letterText" readonly></textarea>
+      <div class="copied" id="copyNote"></div>
+    </div>
+  </div>
+
+  <div class="foot">Please share this with others who want to help Nepal's flood families.</div>
+</div>
